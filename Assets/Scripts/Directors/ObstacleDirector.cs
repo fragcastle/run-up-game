@@ -27,7 +27,10 @@ public class ObstacleDirector : BaseBehavior
                 _spawnTimer = 0f;
 
                 // spawn stuff!
-                var Obj = Obstacles[Random.Range(0, Obstacles.Count - 1)];
+                var index = Random.Range(0, Obstacles.Count);
+                Debug.Log("Obstacles count: " + Obstacles.Count, this);
+                Debug.Log("random index: " + index, this);
+                var Obj = Obstacles[index];
                 var obj = (Transform)Instantiate(Obj, new Vector3(0, _player.transform.position.y + 5, transform.position.z), Quaternion.identity);
                 var collider = obj.GetComponent<BoxCollider2D>();
                 var x = 1.85f * (FlipCoin() ? -1 : 1);
