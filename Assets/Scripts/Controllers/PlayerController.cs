@@ -4,10 +4,6 @@ using System.Collections;
 public class PlayerController : BaseBehavior
 {
 
-    private Animator _animator;
-    private GravityController _gravity;
-    private float _screenWidth;
-
     public bool IsOnLeftSide = true;
     public float DistanceScale = 100;
     public int DistanceTraveled = 0;
@@ -16,8 +12,14 @@ public class PlayerController : BaseBehavior
     public float JumpDuration = 0.5f;
     public int RunSpeed = 5;
     public bool CanRun = false;
+    public GameObject DeathPrefab;
+
     private float currentJumpForce = 0f;
     private float jumpTimer = 0f;
+    private Animator _animator;
+    private GravityController _gravity;
+    private float _screenWidth;
+    
 
     // Use this for initialization
     void Start()
@@ -75,16 +77,23 @@ public class PlayerController : BaseBehavior
         transform.position = new Vector3(xPos, yPos, transform.position.z);
     }
 
-    public float RateOfTravel()
-    {
-        return (MoveForce * Time.deltaTime * 1 * RunSpeed);
-    }
-
-    public void FixedUpdate()
+    void FixedUpdate()
     {
         if (IsOnLeftSide)
             transform.localScale = new Vector3(1, 1, 1);
         else
             transform.localScale = new Vector3(1, -1, 1);
+    }
+
+    public float RateOfTravel()
+    {
+        return (MoveForce * Time.deltaTime * 1 * RunSpeed);
+    }
+
+    public void Die()
+    {
+        if (DeathPrefab != null)
+            Instantiate(DeathPrefab, new Vector3(transform.position.x, transform.position.y + (RateOfTravel() * 2), transform.position.z), Quaternion.identity);
+        Destroy(gameObject);
     }
 }

@@ -26,7 +26,7 @@ public class WallDirector : BaseBehavior
 
     public void Start()
     {
-        _player = GameObject.Find("Player");
+        _player = GameObject.Find(Constants.PlayerObjectName);
 
         _pool = new Transform[MaxSections];
         SpawnWallSections(MaxSections);
@@ -34,11 +34,14 @@ public class WallDirector : BaseBehavior
 
     public void FixedUpdate()
     {
-        var playerPos = _player.transform.position;
-        if (playerPos.y >= _nextHeight - (MaxSections/2 * WallHeight))
+        if (_player != null)
         {
-            // move the section furthest down, up to the top
-            MoveWallSectionUp();
+            var playerPos = _player.transform.position;
+            if (playerPos.y >= _nextHeight - (MaxSections / 2 * WallHeight))
+            {
+                // move the section furthest down, up to the top
+                MoveWallSectionUp();
+            }
         }
     }
 

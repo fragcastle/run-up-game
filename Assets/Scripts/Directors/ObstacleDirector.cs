@@ -14,13 +14,13 @@ public class ObstacleDirector : BaseBehavior
 
     void Start()
     {
-        _player = GameObject.Find("Player");
+        _player = GameObject.Find(Constants.PlayerObjectName);
         _playerController = _player.GetComponent<PlayerController>();       
     }
 
     void FixedUpdate()
     {
-        if (Obstacles != null && Obstacles.Count > 0)
+        if (Obstacles != null && Obstacles.Count > 0 && _player != null)
         {
             if (_spawnTimer >= SpawnInterval)
             {
@@ -28,8 +28,7 @@ public class ObstacleDirector : BaseBehavior
 
                 // spawn stuff!
                 var index = Random.Range(0, Obstacles.Count);
-                Debug.Log("Obstacles count: " + Obstacles.Count, this);
-                Debug.Log("random index: " + index, this);
+
                 var Obj = Obstacles[index];
                 var obj = (Transform)Instantiate(Obj, new Vector3(0, _player.transform.position.y + 5, transform.position.z), Quaternion.identity);
                 var collider = obj.GetComponent<BoxCollider2D>();
@@ -57,7 +56,6 @@ public class ObstacleDirector : BaseBehavior
         {
             var numberOfObjects = timeToScaleScreen / SpawnInterval; // how many objects *could* exist on the screen at one time?
             var buffer = 3; // add some buffer
-            Debug.Log("calculated that " + (int)(numberOfObjects + buffer) + " obstacles can be visible at any time", this);
         }
     }
 }
