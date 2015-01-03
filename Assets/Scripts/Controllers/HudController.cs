@@ -35,10 +35,9 @@ public class HudController : BaseBehavior
         }
     }
 
-    public void Restart()
+    public void RestartGame()
     {
         Time.timeScale = 1;
-        Debug.Log("RESTART");
         Application.LoadLevel(Constants.GameplayScene);
     }
 }
