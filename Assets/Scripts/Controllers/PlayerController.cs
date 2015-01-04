@@ -93,7 +93,7 @@ public class PlayerController : BaseBehavior
     public void Die()
     {
         if (DeathPrefab != null)
-            Instantiate(DeathPrefab, new Vector3(transform.position.x, transform.position.y + (RateOfTravel() * 2), transform.position.z), Quaternion.identity);
+            Instantiate(DeathPrefab, new Vector3(transform.position.x, transform.position.y + (RateOfTravel() * 2), -1f), Quaternion.identity);
         Destroy(gameObject);
     }
 }
