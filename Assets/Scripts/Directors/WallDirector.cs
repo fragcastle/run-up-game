@@ -9,14 +9,14 @@ public class WallDirector : BaseBehavior
     public Transform Wall;
     public Transform EmptyObject;
 
-    public int MaxSections = 4;
+    public int MaxSections = 12;
     public float GenerationDistance = 3f;
 
-    public static float WallWidth = 0.06f;
-    public static float WallHeight = 26.84f;
+    public static float WallWidth = 0.3f;
+    public static float WallHeight = 8.35f;
 
     private GameObject _player;
-    private float _nextHeight = 0;
+    private float _nextHeight = -8.35f;
 
     private int _generations;
 
@@ -64,10 +64,12 @@ public class WallDirector : BaseBehavior
         for (int i = 0; i < count; i++)
 		{
             var section = (Transform)Instantiate(EmptyObject, new Vector3(0, _nextHeight, transform.position.z), Quaternion.identity);
-			var left = SpawnWall(xLeft + WallWidth, section);
-            var right = SpawnWall(xRight - WallWidth, section);
+			var left = SpawnWall(xLeft + WallWidth/2, section);
+            var right = SpawnWall(xRight - WallWidth/2, section);
 
             section.transform.parent = transform;
+
+            right.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
 
             _pool[i] = section;
             _nextHeight += WallHeight;

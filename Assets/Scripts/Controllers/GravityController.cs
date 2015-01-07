@@ -14,20 +14,31 @@ public class GravityController : BaseBehavior
 
     public GravityType GravityBinding;
 
-    private BoxCollider2D _boxCollider;
-
-    public void Start()
+    public void OnDrawGizmos()
     {
-        _boxCollider = GetComponent<BoxCollider2D>();
+        Gizmos.DrawLine(transform.position, ApplyGravity());
     }
 
     public void Update()
     {
-        var x = 0f;
+        transform.position = ApplyGravity();
+    }
+
+    private float GravityEffect
+    {
+        get
+        {
+            return Constants.Gravity * Constants.GravityFactor * Time.deltaTime;
+        }
+    }
+
+    private Vector3 ApplyGravity()
+    {
+        var x = transform.position.x;
         if (GravityBinding == GravityType.BoundToLeft)
-            x = Mathf.Max(MinX + _boxCollider.size.x, transform.position.x - (Constants.Gravity * Constants.GravityFactor * Time.deltaTime));
+            x = Mathf.Max(MinX, x - GravityEffect);
         else
-            x = Mathf.Min(MaxX - _boxCollider.size.x, transform.position.x + (Constants.Gravity * Constants.GravityFactor * Time.deltaTime));
-        transform.position = new Vector3(x, transform.position.y, transform.position.z);
+            x = Mathf.Min(MaxX, x + GravityEffect);
+        return new Vector3(x, transform.position.y, transform.position.z);
     }
 }

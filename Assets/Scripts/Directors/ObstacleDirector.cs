@@ -31,8 +31,8 @@ public class ObstacleDirector : BaseBehavior
 
                 var Obj = Obstacles[index];
                 var obj = (Transform)Instantiate(Obj, new Vector3(0, _player.transform.position.y + 5, transform.position.z), Quaternion.identity);
-                var collider = obj.GetComponent<BoxCollider2D>();
-                var x = 1.85f * (FlipCoin() ? -1 : 1);
+                var controller = obj.GetComponent<ObstacleController>();
+                var x = FlipCoin() ? MinX + controller.ColliderWidth() / 2 : MaxX - controller.ColliderWidth() / 2;
 
                 obj.transform.parent = transform;
                 obj.transform.position = new Vector3(x, obj.transform.position.y, transform.position.z);

@@ -12,6 +12,7 @@ public class PlayerController : BaseBehavior
     public float JumpDuration = 0.5f;
     public int RunSpeed = 5;
     public bool CanRun = false;
+    public float SpinSpeed = 1f;
     public GameObject DeathPrefab;
 
     private float currentJumpForce = 0f;
@@ -80,9 +81,20 @@ public class PlayerController : BaseBehavior
     void FixedUpdate()
     {
         if (IsOnLeftSide)
-            transform.localScale = new Vector3(1, 1, 1);
-        else
-            transform.localScale = new Vector3(1, -1, 1);
+        {
+            if (transform.localScale.y != 1f)
+                transform.localScale = new Vector3(1, transform.localScale.y + Time.deltaTime * SpinSpeed, 1);
+            if (transform.localScale.y >= 1f)
+                transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        if (!IsOnLeftSide)
+        {
+            if (transform.localScale.y != -1f)
+                transform.localScale = new Vector3(1, transform.localScale.y - Time.deltaTime * SpinSpeed, 1);
+            if(transform.localScale.y <= -1f)
+                transform.localScale = new Vector3(1, -1, 1);
+        }
     }
 
     public float RateOfTravel()
@@ -93,7 +105,7 @@ public class PlayerController : BaseBehavior
     public void Die()
     {
         if (DeathPrefab != null)
-            Instantiate(DeathPrefab, new Vector3(transform.position.x, transform.position.y + (RateOfTravel() * 2), -1f), Quaternion.identity);
+            Instantiate(DeathPrefab, new Vector3(transform.position.x, transform.position.y + (RateOfTravel() * 4), -1f), Quaternion.identity);
         Destroy(gameObject);
     }
 }

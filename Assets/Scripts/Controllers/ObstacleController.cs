@@ -15,4 +15,16 @@ public class ObstacleController : BaseBehavior
             collision2D.gameObject.GetComponent<PlayerController>().Die();
         }
     }
+
+    public float ColliderWidth()
+    {
+        var boxCollder = GetComponent<BoxCollider2D>();
+        if (boxCollder != null)
+        {
+            return boxCollder.size.x;
+        }
+
+        var circleCollider = GetComponent<CircleCollider2D>();
+        return circleCollider.radius;
+    }
 }
